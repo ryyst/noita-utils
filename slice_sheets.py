@@ -1,4 +1,23 @@
 #!/usr/bin/env python3
+"""Noita spritesheet slicer
+
+This script is used for managing spritesheets used by the Noita videogame
+(by Nolla Games).
+
+The script splits any-sized spritesheets into separate animation sheets, for
+easier time animating in eg. Aseprite. Names, sizes and positions are all taken
+from the input .xml animation definition file.
+
+NOTICE:
+
+Output dir will be created and populated, regardless if it existed
+previously or not. Same with any named sheet files the script creates, which
+ALWAYS overwrite previous files. So make sure your directory is empty.
+
+Usage:
+
+    slice_sheets.py <sheet.png> <sheet.xml> <output_directory_name>
+"""
 import os
 import sys
 from pathlib import Path
@@ -66,16 +85,15 @@ def create_new_files_from_rows(img_path, rows, dir_name):
 
 
 def main(args):
-    if len(args) != 2:
-        print(f"Usage: slice_sheets.py <sheet.png> <sheet.xml>")
+    if len(args) != 3:
+        print(__doc__)
         sys.exit(1)
 
-    img_path, xml_path = args
-    dir_name, _ = img_path.split(".")
+    img_path, xml_path, output_dir = args
 
     rows_by_pos = parse_rows_from_xml(xml_path)
-    create_dir_for_splits(dir_name)
-    create_new_files_from_rows(img_path, rows_by_pos, dir_name)
+    create_dir_for_splits(output_dir)
+    create_new_files_from_rows(img_path, rows_by_pos, output_dir)
 
 
 if __name__ == "__main__":
