@@ -130,7 +130,7 @@ def render_sheet(biomes, materials):
     y = render_biomes(draw, materials, y)
 
     disclaimer = "Generated on: %s" % date.today().isoformat()
-    disclaimer += " | Contact: @ryyst/roisto/rippentrop/mortti"
+    disclaimer += " | Contact: @ryyst"
     disclaimer += " | Font: Coder's Crux by Chequered Ink"
     draw.text((PAGE_MARGINS, height-12), disclaimer, BLACK, font=FONT)
 
