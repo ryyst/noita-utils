@@ -3,6 +3,7 @@ import sys
 from datetime import date
 from pathlib import Path
 from xml.dom import minidom
+from xml.parsers.expat import ExpatError
 
 from PIL import Image
 from PIL import ImageFont
@@ -31,8 +32,20 @@ def _normalize_color(color):
     return "#%s" % (color[2:].lower())
 
 
+def open_xml(path):
+    try:
+        return minidom.parse(path)
+    except ExpatError as e:
+        print("XML parsing error:", e)
+        sys.exit(1)
+    except FileNotFoundError as e:
+        print("Error opening XML:", e)
+        sys.exit(1)
+
+
 def parse_materials_xml(xml_path):
-    xml_file = minidom.parse(xml_path)
+    xml_file = open_xml(xml_path)
+
     cell_data = xml_file.getElementsByTagName("CellData")
     cell_data_children = xml_file.getElementsByTagName("CellDataChild")
 
@@ -50,7 +63,7 @@ def parse_materials_xml(xml_path):
 
 
 def parse_biomes_xml(xml_path):
-    xml_file = minidom.parse(xml_path)
+    xml_file = open_xml(xml_path)
     elements = xml_file.getElementsByTagName("Biome")
 
     line_data = []
