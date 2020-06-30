@@ -165,7 +165,9 @@ def main(args):
     output_path = "colors.png"
     img.save(output_path)
 
-    print("Material palette generated to: %s" % output_path)
+    print("Material palette generated to `%s`, with %s biomes and %s materials" % (
+        output_path, len(biomes), len(materials)
+    ))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
