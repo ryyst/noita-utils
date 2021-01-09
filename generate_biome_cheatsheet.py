@@ -84,12 +84,14 @@ def render_biomes(draw, biomes, start_y):
     # TODO: This will still break with odd sizes, the +1 is just an
     #       emergency fix for this specific length.
     column_size = int(len(biomes) / 3) + 1
-    biomes_by_columns = [biomes[i:i + column_size] for i in range(0, len(biomes), column_size)]
+    biomes_by_columns = [
+        biomes[i : i + column_size] for i in range(0, len(biomes), column_size)
+    ]
 
     for col, column in enumerate(biomes_by_columns):
         for row, data in enumerate(column):
-            y = start_y + LINE_HEIGHT*row
-            x = PAGE_MARGINS + COLUMN_WIDTH*col
+            y = start_y + LINE_HEIGHT * row
+            x = PAGE_MARGINS + COLUMN_WIDTH * col
             name, color = data
 
             render_line(draw, (x, y), color, name)
@@ -108,7 +110,7 @@ def render_line(draw, start_point, color, name):
     x, y = start_point
 
     box_coords = ((x, y), (x + BOX_SIZE, y + BOX_SIZE))
-    text_coords = (x + BOX_SIZE + LINE_PADDING, y+LINE_PADDING)
+    text_coords = (x + BOX_SIZE + LINE_PADDING, y + LINE_PADDING)
 
     biome_info = f"{color} - {name}"
 
@@ -121,10 +123,10 @@ def render_sheet(biomes, materials):
 
     # Pre-calculate the dimensions that the sheet will approximately take.
     # NOTE: The height might be a bit off but works for the current specific cases.
-    width = PAGE_MARGINS*2 + COLUMN_WIDTH*3
+    width = PAGE_MARGINS * 2 + COLUMN_WIDTH * 3
 
-    height = len(biomes)/3 * LINE_HEIGHT + PAGE_MARGINS * 2
-    height += (len(materials)/3 * LINE_HEIGHT) + (PAGE_MARGINS * 8)
+    height = len(biomes) / 3 * LINE_HEIGHT + PAGE_MARGINS * 2
+    height += (len(materials) / 3 * LINE_HEIGHT) + (PAGE_MARGINS * 8)
     height = int(height)
 
     img = Image.new("RGBA", (width, height), "#2c2c2c")
@@ -134,18 +136,20 @@ def render_sheet(biomes, materials):
     y = PAGE_MARGINS
 
     draw.text((PAGE_MARGINS, y), "BIOME COLORS (for biome_map.png)", BLACK, font=FONT)
-    y += (PAGE_MARGINS * 2)
+    y += PAGE_MARGINS * 2
     y = render_biomes(draw, biomes, y)
 
-    y += (PAGE_MARGINS * 5)
-    draw.text((PAGE_MARGINS, y), "MATERIALS (for Wang tiles & pixel scenes)", BLACK, font=FONT)
-    y += (PAGE_MARGINS * 2)
+    y += PAGE_MARGINS * 5
+    draw.text(
+        (PAGE_MARGINS, y), "MATERIALS (for Wang tiles & pixel scenes)", BLACK, font=FONT
+    )
+    y += PAGE_MARGINS * 2
     y = render_biomes(draw, materials, y)
 
     disclaimer = "Generated on: %s" % date.today().isoformat()
     disclaimer += " | Contact: @ryyst"
     disclaimer += " | Font: Coder's Crux by Chequered Ink"
-    draw.text((PAGE_MARGINS, height-12), disclaimer, BLACK, font=FONT)
+    draw.text((PAGE_MARGINS, height - 12), disclaimer, BLACK, font=FONT)
 
     return img
 
@@ -165,9 +169,11 @@ def main(args):
     output_path = "colors.png"
     img.save(output_path)
 
-    print("Material palette generated to `%s`, with %s biomes and %s materials" % (
-        output_path, len(biomes), len(materials)
-    ))
+    print(
+        "Material palette generated to `%s`, with %s biomes and %s materials"
+        % (output_path, len(biomes), len(materials))
+    )
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
